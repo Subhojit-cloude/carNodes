@@ -277,7 +277,8 @@ export default function LoginModal({ isOpen, onClose, onConnected, initialMode =
           )}
 
           {/* ──────────────────────────────────────────────────────────
-              ROLE SELECTOR SECTION: Buyer | Seller | Authority
+          {/* ──────────────────────────────────────────────────────────
+              ROLE SELECTOR SECTION: Buyer | Seller (Authority omitted in Signup)
           ────────────────────────────────────────────────────────── */}
           {(mode === 'signup' || mode === 'signin') && (
             <div>
@@ -285,13 +286,14 @@ export default function LoginModal({ isOpen, onClose, onConnected, initialMode =
                 <label className="text-xs font-mono uppercase font-bold text-[#6E6259] tracking-wider">
                   Select Your Account Role:
                 </label>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold uppercase">
+                <span className="text-[10px] font-mono text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200 font-bold uppercase">
                   {role} Mode Active
                 </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
-                {roles.map((r) => {
+              {/* In Get Started (Sign Up), only Buyer & Seller are available */}
+              <div className={`grid ${mode === 'signup' ? 'grid-cols-2' : 'grid-cols-3'} gap-2.5`}>
+                {(mode === 'signup' ? roles.filter((r) => r.id !== 'authority') : roles).map((r) => {
                   const Icon = r.icon;
                   const isSelected = role === r.id;
                   return (
@@ -299,17 +301,17 @@ export default function LoginModal({ isOpen, onClose, onConnected, initialMode =
                       key={r.id}
                       type="button"
                       onClick={() => setRole(r.id)}
-                      className={`p-3 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between cursor-pointer ${isSelected
-                          ? `ring-2 ring-[#B89B5E] ${r.color} shadow-sm`
+                      className={`p-3.5 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between cursor-pointer ${isSelected
+                          ? `ring-2 ring-teal-600 ${r.color} shadow-sm`
                           : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50'
                         }`}
                     >
                       <div className="flex items-center justify-between w-full mb-1">
-                        <Icon className="w-5 h-5" />
-                        {isSelected && <CheckCircle2 className="w-4 h-4 text-[#B89B5E]" />}
+                        <Icon className="w-5 h-5 text-teal-700" />
+                        {isSelected && <CheckCircle2 className="w-4 h-4 text-teal-600" />}
                       </div>
                       <div>
-                        <div className="text-xs font-bold font-heading uppercase">{r.title}</div>
+                        <div className="text-xs font-bold font-heading uppercase text-slate-900">{r.title}</div>
                         <div className="text-[10px] text-zinc-500 leading-tight mt-0.5">{r.subtitle}</div>
                       </div>
                     </button>
@@ -319,10 +321,10 @@ export default function LoginModal({ isOpen, onClose, onConnected, initialMode =
 
               {/* Role explanation callout */}
               <div className="mt-2.5 p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/80 text-[11px] text-[#6E6259] flex items-start space-x-2">
-                <ShieldCheck className="w-4 h-4 text-[#B89B5E] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-[#3D5066] capitalize">{role} Role Features: </strong>
-                  {roles.find((r) => r.id === role)?.desc}
+                  <strong className="text-slate-800 capitalize">{role} Role Features: </strong>
+                  {roles.find((r) => r.id === role)?.subtitle || 'Browse & trade verified real-world automotive assets.'}
                 </div>
               </div>
             </div>

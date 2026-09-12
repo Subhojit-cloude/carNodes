@@ -146,7 +146,7 @@ export default function MarketplaceModal({
                     {/* Car Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[11px] font-mono text-[#FF3B30] font-bold">{car.id}</span>
+                        <span className="text-[11px] font-mono text-teal-700 font-bold">{car.id}</span>
                         <span className="text-xs font-mono font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                           Trust {car.trustScore}/100
                         </span>
@@ -159,9 +159,16 @@ export default function MarketplaceModal({
                         <span className="text-sm font-heading font-extrabold text-[#2B2521]">
                           ${car.priceUsd.toLocaleString()}
                         </span>
-                        <span className="text-xs font-mono text-[#B36B39] font-bold">
-                          {car.priceAlgo.toLocaleString()} ALGO
-                        </span>
+                        {!walletConnected ? (
+                          <span className="text-[10px] font-mono font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200 flex items-center space-x-1">
+                            <Lock className="w-3 h-3" />
+                            <span>Click to Login</span>
+                          </span>
+                        ) : (
+                          <span className="text-xs font-mono text-teal-800 font-bold">
+                            {car.priceAlgo ? `${car.priceAlgo.toLocaleString()} ALGO` : `₹${car.priceInr}`}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -174,8 +181,8 @@ export default function MarketplaceModal({
           <div className="lg:col-span-5 p-6 bg-white border-l border-zinc-200 overflow-y-auto flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-zinc-200 pb-3 mb-4">
-                <span className="text-xs font-mono uppercase font-bold text-[#B36B39]">Inspected Asset Specification</span>
-                <span className="text-xs font-mono font-bold text-[#FF3B30]">{selectedVehicle.id}</span>
+                <span className="text-xs font-mono uppercase font-bold text-teal-800">Inspected Asset Specification</span>
+                <span className="text-xs font-mono font-bold text-teal-700">{selectedVehicle.id}</span>
               </div>
 
               {/* Selected Car Title */}
@@ -199,7 +206,7 @@ export default function MarketplaceModal({
                 </div>
                 <div className="flex justify-between text-xs font-mono">
                   <span className="text-[#6E6259]">AI Valuation:</span>
-                  <span className="text-emerald-700 font-bold">{selectedVehicle.valuation.fairness}</span>
+                  <span className="text-emerald-700 font-bold">{selectedVehicle.valuation?.fairness || 'Verified Fair Market'}</span>
                 </div>
               </div>
 
@@ -221,12 +228,20 @@ export default function MarketplaceModal({
 
             {/* ESCROW PURCHASE ACTION */}
             <div>
-              {purchaseSuccess ? (
+              {!walletConnected ? (
+                <button
+                  onClick={onOpenWalletModal}
+                  className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-teal-700 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl flex items-center justify-center space-x-2 cursor-pointer"
+                >
+                  <Lock className="w-4 h-4 text-teal-400" />
+                  <span>Log In to Inspect Passport & Buy</span>
+                </button>
+              ) : purchaseSuccess ? (
                 <div className="bg-emerald-50 border border-emerald-300 p-4 rounded-2xl text-center space-y-2 font-mono">
                   <ShieldCheck className="w-8 h-8 text-emerald-600 mx-auto" />
                   <h4 className="text-sm font-bold text-emerald-950">Escrow Deposit Successful!</h4>
                   <p className="text-xs text-emerald-800">
-                    Funds are safely locked in Algorand Smart Contract ASA #{selectedVehicle.algorandAssetId}. Awaiting physical delivery confirmation.
+                    Funds are safely locked in Algorand Smart Contract ASA #{selectedVehicle.algorandAssetId || '894102'}. Awaiting physical delivery confirmation.
                   </p>
                   <button
                     onClick={() => setPurchaseSuccess(false)}
@@ -239,17 +254,17 @@ export default function MarketplaceModal({
                 <button
                   onClick={handleInitiateEscrow}
                   disabled={isProcessingEscrow}
-                  className="w-full py-4 rounded-2xl bg-[#2B2521] hover:bg-[#FF3B30] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl flex items-center justify-center space-x-2 cursor-pointer"
+                  className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-teal-700 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   {isProcessingEscrow ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-white" />
-                      <span>Locking Funds in Algorand Escrow...</span>
+                      <span>Locking Funds in Smart Escrow...</span>
                     </>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4 text-emerald-400" />
-                      <span>Initiate Escrow Purchase ({selectedVehicle.priceAlgo.toLocaleString()} ALGO)</span>
+                      <Lock className="w-4 h-4 text-teal-400" />
+                      <span>Initiate Escrow Purchase (${selectedVehicle.priceUsd?.toLocaleString()})</span>
                     </>
                   )}
                 </button>

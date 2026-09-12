@@ -55,28 +55,10 @@ export default function HeroShowroom({
               A trusted vehicle marketplace where every vehicle is verified, its history is transparent, and ownership is digitally secured as a Real-World Asset (RWA).
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <button
-                onClick={onOpenMarketplace}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#2B2521] hover:bg-[#FF3B30] text-white font-semibold text-xs uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 group cursor-pointer"
-              >
-                <span>Explore Verified Vehicles</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={onOpenVerifyModal}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white hover:bg-zinc-50 text-[#2B2521] border border-zinc-300 font-semibold text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center space-x-2 cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4 text-[#B36B39]" />
-                <span>Verify a Vehicle</span>
-              </button>
-            </div>
-
             {/* Trust strip */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] uppercase tracking-wider font-semibold text-[#6E6259] pt-2">
-              <span className="flex items-center space-x-1.5"><span className="text-[#FF3B30]">●</span> Authority-Verified</span>
-              <span className="flex items-center space-x-1.5"><span className="text-[#B36B39]">●</span> Digital Vehicle Passport</span>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] uppercase tracking-wider font-semibold text-[#6E6259] pt-1">
+              <span className="flex items-center space-x-1.5"><span className="text-[#0D9488]">●</span> Authority-Verified</span>
+              <span className="flex items-center space-x-1.5"><span className="text-[#3D5066]">●</span> Digital Vehicle Passport</span>
               <span className="flex items-center space-x-1.5"><span className="text-[#2B2521]">●</span> AI-Powered</span>
               <span className="flex items-center space-x-1.5"><span className="text-emerald-600">●</span> Blockchain-Backed</span>
             </div>
